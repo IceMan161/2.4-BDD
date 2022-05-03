@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import lombok.val;
+import ru.netology.web.data.DataHelper;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -27,8 +28,16 @@ public class DashboardPage {
         heading.shouldBe(visible);
     }
 
-    public MoneyTransferPage validDashbord() {
-
+    public MoneyTransferPage validCardFirst() {
+        firstButton.click();
+        return new MoneyTransferPage();
     }
+
+    public MoneyTransferPage validCardSecond() {
+        secondButton.click();
+        return new MoneyTransferPage();
+    }
+
+
 
 }
