@@ -1,7 +1,6 @@
 package ru.netology.web.page;
 
 import com.codeborne.selenide.SelenideElement;
-import lombok.Value;
 import ru.netology.web.data.DataHelper;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -15,16 +14,16 @@ public class MoneyTransferPage {
     public MoneyTransferPage() {
     }
 
-    public DashboardPage transferAmountFirstCard(DataHelper.CardsInfo info) {
-        transferAmount.setValue(info.getTransferAmount());
-        transferFrom.setValue(info.getSecondCard());
+    public DashboardPage transferAmountFirstCard() {
+        transferAmount.setValue(DataHelper.getAmountInfo().getAmount());
+        transferFrom.setValue(DataHelper.getCardsInfoSecond().getCard());
         transferButton.click();
         return new DashboardPage();
     }
 
-    public DashboardPage transferAmountSecondCard(DataHelper.CardsInfo info) {
-        transferAmount.setValue(info.getTransferAmount());
-        transferFrom.setValue(info.getFirstCard());
+    public DashboardPage transferAmountSecondCard() {
+        transferAmount.setValue(DataHelper.getAmountInfo().getAmount());
+        transferFrom.setValue(DataHelper.getCardsInfoFirst().getCard());
         transferButton.click();
         return new DashboardPage();
     }
