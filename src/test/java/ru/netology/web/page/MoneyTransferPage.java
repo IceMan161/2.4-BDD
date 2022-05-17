@@ -14,19 +14,11 @@ public class MoneyTransferPage {
     public MoneyTransferPage() {
     }
 
-    public DashboardPage transferAmountFirstCard() {
-        transferAmount.setValue(DataHelper.getAmountInfo().getAmount());
-        transferFrom.setValue(DataHelper.getCardsInfoSecond().getCard());
+    public DashboardPage transfer(DataHelper.CardsInfo cardsInfo, String amount) {
+        transferAmount.setValue(amount);
+        transferFrom.setValue(cardsInfo.getCard());
         transferButton.click();
         return new DashboardPage();
     }
-
-    public DashboardPage transferAmountSecondCard() {
-        transferAmount.setValue(DataHelper.getAmountInfo().getAmount());
-        transferFrom.setValue(DataHelper.getCardsInfoFirst().getCard());
-        transferButton.click();
-        return new DashboardPage();
-    }
-
 
 }

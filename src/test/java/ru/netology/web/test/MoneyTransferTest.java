@@ -19,19 +19,20 @@ public class MoneyTransferTest {
 
     @Test
     void mustTransferToFirstCard() {
-
 //        Configuration.holdBrowserOpen = true;
         var loginPage = new LoginPage();
         var authInfo = DataHelper.getAuthInfo();
         var verificationPage = loginPage.validLogin(authInfo);
         var verifyInfo = DataHelper.getVerificationCodeFor(authInfo);
         var dashboardPage = verificationPage.validVerify(verifyInfo);
-        var balanceBefore = dashboardPage.getCardBalance(DataHelper.getCardsInfoFirst().getId());
+        var balanceBeforeFirst = dashboardPage.getCardBalance(DataHelper.getCardsInfoFirst().getId());
+        var balanceBeforeSecond = dashboardPage.getCardBalance(DataHelper.getCardsInfoSecond().getId());
         var moneyTransferPage = dashboardPage.validCardFirst();
-        var transferFirst = moneyTransferPage.transferAmountFirstCard();
-        var balanceAfter = transferFirst.getCardBalance(DataHelper.getCardsInfoFirst().getId());
-        assertEquals(balanceBefore + 2000, balanceAfter);
-
+        var transferFirst = moneyTransferPage.transfer(DataHelper.getCardsInfoSecond(), "5000");
+        var balanceAfterFirst = transferFirst.getCardBalance(DataHelper.getCardsInfoFirst().getId());
+        var balanceAfterSecond = dashboardPage.getCardBalance(DataHelper.getCardsInfoSecond().getId());
+        assertEquals(balanceBeforeFirst + 5000, balanceAfterFirst);
+        assertEquals(balanceBeforeSecond - 5000, balanceAfterSecond);
     }
 
     @Test
@@ -43,11 +44,34 @@ public class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verifyInfo = DataHelper.getVerificationCodeFor(authInfo);
         var dashboardPage = verificationPage.validVerify(verifyInfo);
-        var balanceBefore = dashboardPage.getCardBalance(DataHelper.getCardsInfoSecond().getId());
+        var balanceBeforeSecond = dashboardPage.getCardBalance(DataHelper.getCardsInfoSecond().getId());
+        var balanceBeforeFirst = dashboardPage.getCardBalance(DataHelper.getCardsInfoFirst().getId());
         var moneyTransferPage = dashboardPage.validCardSecond();
-        var transferSecond = moneyTransferPage.transferAmountSecondCard();
-        var balanceAfter = transferSecond.getCardBalance(DataHelper.getCardsInfoSecond().getId());
-        assertEquals(balanceBefore + 2000, balanceAfter);
+        var transferSecond = moneyTransferPage.transfer(DataHelper.getCardsInfoFirst(), "5000");
+        var balanceAfterSecond = transferSecond.getCardBalance(DataHelper.getCardsInfoSecond().getId());
+        var balanceAfterFirst = dashboardPage.getCardBalance(DataHelper.getCardsInfoFirst().getId());
+        assertEquals(balanceBeforeSecond + 5000, balanceAfterSecond);
+        assertEquals(balanceBeforeFirst - 5000, balanceAfterFirst);
+
+    }
+
+    @Test
+    void shouldCancelTransfer() {
+
+//        Configuration.holdBrowserOpen = true;
+        var loginPage = new LoginPage();
+        var authInfo = DataHelper.getAuthInfo();
+        var verificationPage = loginPage.validLogin(authInfo);
+        var verifyInfo = DataHelper.getVerificationCodeFor(authInfo);
+        var dashboardPage = verificationPage.validVerify(verifyInfo);
+        var balanceBeforeFirst = dashboardPage.getCardBalance(DataHelper.getCardsInfoFirst().getId());
+        var balanceBeforeSecond = dashboardPage.getCardBalance(DataHelper.getCardsInfoSecond().getId());
+        var moneyTransferPage = dashboardPage.validCardFirst();
+        var transferFirst = moneyTransferPage.transfer(DataHelper.getCardsInfoSecond(), "11000");
+        var balanceAfterFirst = transferFirst.getCardBalance(DataHelper.getCardsInfoFirst().getId());
+        var balanceAfterSecond = dashboardPage.getCardBalance(DataHelper.getCardsInfoSecond().getId());
+        assertEquals(balanceBeforeFirst, balanceAfterFirst);
+        assertEquals(balanceBeforeSecond, balanceAfterSecond);
 
     }
 
